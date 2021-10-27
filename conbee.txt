@@ -1,0 +1,14 @@
+/usr/bin/deCONZ 
+0BDFAC94EE
+{
+    "config": {
+        "on": true,
+        "reachable": true
+    },
+    "manufacturername": "Xiaomi sensors",
+    "modelid": "wsdcgq11lm",
+    "name": "temp1",
+    "swversion": "1.0",
+    "type": "Temperature",
+    "uniqueid": "00:1f:ee:00:00:00:08:bb-01-xxx"
+}
