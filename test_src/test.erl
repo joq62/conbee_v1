@@ -60,9 +60,7 @@ start()->
 %% Description: Initiate the eunit tests, set upp needed processes etc
 %% Returns: non
 %% --------------------------------------------------------------------
-backup_log_dir()->
-    
-    ok.
+
 
 %% --------------------------------------------------------------------
 %% Function:start/0 
@@ -79,16 +77,19 @@ backup_log_dir()->
 %% --------------------------------------------------------------------
 pass_0()->
   
+    io:format("************~p ****************~n",[time()]),
+  
+    Info=conbee:sensors(),    
+    io:format("Info ~p~n",[Info]),
+ %   [io:format("~p~n",[{Name,Key,Value}])||[{name,Name},{id,Id},{type,Type},{status,{Key,Value}}]<-Info],
+    io:format("----------------------------------------------~n"),
+    Raw=conbee:sensors_raw(),    
+    io:format("Raw ~p~n",[Raw]),
     ok.
 
-%% --------------------------------------------------------------------
-%% Function:start/0 
-%% Description: Initiate the eunit tests, set upp needed processes etc
-%% Returns: non
-%% --------------------------------------------------------------------
-
-
-
+   % timer:sleep(10*1000),
+   % pass_0().
+    
 
 %% --------------------------------------------------------------------
 %% Function:start/0 
@@ -96,57 +97,17 @@ pass_0()->
 %% Returns: non
 %% --------------------------------------------------------------------
 pass_1()->
+    io:format("************~p ****************~n",[time()]),
+    Info=conbee:sensors(),    
+ %   io:format("Info ~p~n",[Info]),
+    [io:format("~p~n",[{Name,Key,Value}])||[{name,Name},{id,_Id},{type,_Type},{status,{Key,Value}}]<-Info],
+    
    
-    ok.
+    timer:sleep(10*1000),
+    pass_1().
+
+    %ok.
     
-
-
-
-    
-%% --------------------------------------------------------------------
-%% Function:start/0 
-%% Description: Initiate the eunit tests, set upp needed processes etc
-%% Returns: non
-%% --------------------------------------------------------------------
-pass_2()->
-
-    ok.
-
-%% --------------------------------------------------------------------
-%% Function:start/0 
-%% Description: Initiate the eunit tests, set upp needed processes etc
-%% Returns: non
-%% --------------------------------------------------------------------
-pass_3()->
-
-    ok.
-
-%% --------------------------------------------------------------------
-%% Function:start/0 
-%% Description: Initiate the eunit tests, set upp needed processes etc
-%% Returns: non
-%% --------------------------------------------------------------------
-pass_4()->
-  
-    ok.
-
-%% --------------------------------------------------------------------
-%% Function:start/0 
-%% Description: Initiate the eunit tests, set upp needed processes etc
-%% Returns: non
-%% --------------------------------------------------------------------
-pass_5()->
-  
-    ok.
-
-
-
-
-%% --------------------------------------------------------------------
-%% Function:start/0 
-%% Description: Initiate the eunit tests, set upp needed processes etc
-%% Returns: non
-%% --------------------------------------------------------------------
 
 %% --------------------------------------------------------------------
 %% Function:start/0 

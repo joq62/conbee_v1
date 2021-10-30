@@ -93,17 +93,14 @@ init([]) ->
 %%          {stop, Reason, Reply, State}   | (terminate/2 is called)
 %%          {stop, Reason, State}            (aterminate/2 is called)
 %% --------------------------------------------------------------------
-handle_call({temp},_From,State) ->
+handle_call({sensors_raw},_From,State) ->
    % io:format("~p~n",[{temp,?MODULE,?FUNCTION_NAME,?LINE}]),
-    Reply= lib_conbee:get_temp(),
+    Reply= sensors:get_info_raw(),
     {reply, Reply, State};
 
-handle_call({door},_From,State) ->
-    Reply=lib_conbee:get_open_close(),
-    {reply, Reply, State};
-
-handle_call({motion},_From,State) ->
-    Reply=lib_conbee:get_motion(),
+handle_call({sensors},_From,State) ->
+   % io:format("~p~n",[{temp,?MODULE,?FUNCTION_NAME,?LINE}]),
+    Reply= sensors:get_info(),
     {reply, Reply, State};
 
 

@@ -30,6 +30,8 @@ balcony:
 build:
 	rm -rf */*.beam *~ */*~ *.dump *.html;
 	cp priv/*.html ebin;
+#	common
+	erlc -o ebin ../../common/src/appfile.erl;
 #	gun
 	cp ../gun/ebin/* ebin;
 	cp ../gun/deps/cowlib/ebin/* ebin;
@@ -49,6 +51,8 @@ build:
 unit_test:
 	rm -rf */*.beam *~ */*~ *.dump *.html;
 	cp priv/*.html ebin;
+#	common
+	erlc -o ebin ../../common/src/appfile.erl;
 #	gun
 	cp ../gun/ebin/* ebin;
 	cp ../gun/deps/cowlib/ebin/* ebin;

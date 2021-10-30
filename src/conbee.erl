@@ -7,7 +7,6 @@
 %%% -------------------------------------------------------------------
 -module(conbee). 
 
--behaviour(application).
 %% --------------------------------------------------------------------
 %% Include files
 %% --------------------------------------------------------------------
@@ -23,17 +22,14 @@
 -define(SERVER,conbee_server).
 %% --------------------------------------------------------------------
 -export([
-	 temp/0,
-	 door/0,
-	 motion/0,
+	 sensors_raw/0,
+	 sensors/0,
 	 ping/0
 	]).
 
 -export([
 	 boot/0,
 	 start/0,
-	 start/2,
-	 stop/1,
 	 stop/0
 	]).
 
@@ -66,36 +62,12 @@ stop()-> gen_server:call(?SERVER, {stop},infinity).
 ping()-> 
     gen_server:call(?SERVER, {ping},infinity).
 
-temp()-> 
-    gen_server:call(?SERVER, {temp},infinity).
-door()-> 
-    gen_server:call(?SERVER, {door},infinity).
-motion()-> 
-    gen_server:call(?SERVER, {motion},infinity).
+sensors_raw()-> 
+    gen_server:call(?SERVER, {sensors_raw},infinity).
+
+sensors()-> 
+    gen_server:call(?SERVER, {sensors},infinity).
+
 
 
 %%----------------------------------------------------------------------
-%% --------------------------------------------------------------------
-%% Func: start/2
-%% Returns: {ok, Pid}        |
-%%          {ok, Pid, State} |
-%%          {error, Reason}
-%% --------------------------------------------------------------------
-start(_Type, _StartArgs) ->
-    ok=init(),
-    {ok,Pid}= conbee_sup:start_link(),
-    {ok,Pid}.
-   
-%% --------------------------------------------------------------------
-%% Func: stop/1
-%% Returns: any
-%% --------------------------------------------------------------------
-stop(_State) ->
-    ok.
-
-%% ====================================================================
-%% Internal functions
-%% ====================================================================
-init()->
-
-    ok.
