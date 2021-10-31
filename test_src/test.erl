@@ -75,8 +75,18 @@ start()->
 %% Description: Initiate the eunit tests, set upp needed processes etc
 %% Returns: non
 %% --------------------------------------------------------------------
+curl(Link)->
+    Cmd = "curl -s GET \"" ++ Link ++ "\"",
+    Output = os:cmd(Cmd),
+    Output.
+
 pass_0()->
-  
+    inets:start(),
+    {ok, {{Version, 200, ReasonPhrase}, Headers, Body}} =
+      httpc:request(get,{"https://phoscon.de/discover",[]},[],[{body_format,binary}]),
+    gl=Body,
+    gl= Map=jsx:decode(Body,[]),
+
     io:format("************~p ****************~n",[time()]),
   
     Info=conbee:sensors(),    

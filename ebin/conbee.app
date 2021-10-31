@@ -12,6 +12,6 @@
 {git_path,"https://github.com/joq62/conbee.git"},
 {env,[{ip,"192.168.0.203"},
       {port,80},
-      {crypto,"0BDFAC94EE"},
-      {cmd_sensors,"/api/0BDFAC94EE/sensors"}]}
+      {crypto,"ECDFD5B362"},
+      {cmd_sensors,"/api/ECDFD5B362/sensors"}]}
 ]}.

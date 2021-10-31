@@ -4,8 +4,8 @@
 %%% 
 %%% Created : 10 dec 2012
 %%% -------------------------------------------------------------------
--module(sensors).    
-     
+-module(conbee_control).    
+
 %% --------------------------------------------------------------------
 %% Include files
 %% --------------------------------------------------------------------
@@ -16,7 +16,7 @@
 
 %% External exports
 -export([start/0,
-	 get_info_raw/0,get_info/0]). 
+	 check_cookie/0]). 
 
 
 %% ====================================================================
@@ -30,7 +30,7 @@
 %% Returns: non
 %% --------------------------------------------------------------------
 start()-> 
-
+    
     ok.
 
 
@@ -58,14 +58,13 @@ start()->
 %% Description: Initiate the eunit tests, set upp needed processes etc
 %% Returns: non
 %% --------------------------------------------------------------------
-
-get_info()->
+check_cookie()->
     {ok,ConbeeAddr}=application:get_env(ip),
     {ok,ConbeePort}=application:get_env(port),
     {ok,CmdSensors}=application:get_env(cmd_sensors),
 
     {ok, ConnPid} = gun:open(ConbeeAddr,ConbeePort),
-    Ref=gun:get(ConnPid,CmdSensors),
+    Ref=gun:post(ConnPid,"/api"),
     Result= get_info(gun:await_body(ConnPid, Ref)),
     ok=gun:close(ConnPid),
     Result.
@@ -87,49 +86,43 @@ format_info([{IdBin,Map}|T],Acc)->
     Name=binary_to_list(maps:get(<<"name">>,Map)),
     Type=binary_to_list(maps:get(<<"type">>,Map)),
     %
-    case get_status(Type,Map) of
-	{error,Reason}->
-	    NewAcc=Acc,
-	    io:forma("Error ~p~n",[Reason]);
-	{ok,{Key,Value}}->
-	    Status={Key,Value},
-	    NewAcc=[[{name,Name},{id,Id},{type,Type},{status,Status}]|Acc]
-    end,
+    {Key,Value}=get_status(Type,Map),
+    Status={Key,Value},
+    NewAcc=[[{name,Name},{id,Id},{type,Type},{status,Status}]|Acc],
     format_info(T,NewAcc).
 
 get_status("ZHATemperature",Map)->
     Z=maps:get(<<"state">>,Map),
     true=is_map(Z),
     R=maps:get(<<"temperature">>,Z),
-    {ok,{"temperature",float_to_list(R/100,[{decimals,1}])}};  
+    {"temperature",float_to_list(R/100,[{decimals,1}])};  
 get_status("ZHAHumidity",Map)->
     Z=maps:get(<<"state">>,Map),
     true=is_map(Z),
     R=maps:get(<<"humidity">>,Z),
-    {ok,{"humidity",float_to_list(R/100,[{decimals,0}])}};  
+    {"humidity",float_to_list(R/100,[{decimals,0}])};  
 get_status("ZHAPressure",Map)->
     Z=maps:get(<<"state">>,Map),
     true=is_map(Z),
     R=maps:get(<<"pressure">>,Z),
     H=integer_to_list(R),
-    {ok,{"pressure",H}};  
+    {"pressure",H};  
 get_status("ZHAOpenClose",Map)->
     Z=maps:get(<<"state">>,Map),
     true=is_map(Z),
     R=maps:get(<<"open">>,Z),
-    {ok,{"open",R}};  
+    {"open",R};  
 get_status("ZHALightLevel",Map)->
     Z=maps:get(<<"state">>,Map),
     true=is_map(Z),
     R = maps:get(<<"daylight">>,Z),
-    {ok,{"daylight",R}};  
+    {"daylight",R};  
 get_status("ZHAPresence",Map)->
     Z=maps:get(<<"state">>,Map),
     true=is_map(Z),
     R=maps:get(<<"presence">>,Z),
-    {ok,{"presence",R}};
-get_status(Signal,Map) ->
-    {error,[unmatched,Signal,?MODULE,?FUNCTION_NAME,?LINE]}.
+    {"presence",R}.  
+
 %% --------------------------------------------------------------------
 %% Function:start/0 
 %% Description: Initiate the eunit tests, set upp needed processes etc
