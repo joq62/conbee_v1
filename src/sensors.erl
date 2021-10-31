@@ -90,7 +90,7 @@ format_info([{IdBin,Map}|T],Acc)->
     case get_status(Type,Map) of
 	{error,Reason}->
 	    NewAcc=Acc,
-	    io:forma("Error ~p~n",[Reason]);
+	    io:format("Error ~p~n",[Reason]);
 	{ok,{Key,Value}}->
 	    Status={Key,Value},
 	    NewAcc=[[{name,Name},{id,Id},{type,Type},{status,Status}]|Acc]
