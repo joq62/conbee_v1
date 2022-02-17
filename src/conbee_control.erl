@@ -16,6 +16,8 @@
 
 %% External exports
 -export([start/0,
+	 get_info_raw/0,
+	 get_info_raw/1,
 	 check_cookie/0]). 
 
 
@@ -61,7 +63,7 @@ start()->
 check_cookie()->
     {ok,ConbeeAddr}=application:get_env(ip),
     {ok,ConbeePort}=application:get_env(port),
-    {ok,CmdSensors}=application:get_env(cmd_sensors),
+    {ok,_CmdSensors}=application:get_env(cmd_sensors),
 
     {ok, ConnPid} = gun:open(ConbeeAddr,ConbeePort),
     Ref=gun:post(ConnPid,"/api"),

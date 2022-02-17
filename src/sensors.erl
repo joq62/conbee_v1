@@ -87,13 +87,13 @@ format_info([{IdBin,Map}|T],Acc)->
     Name=binary_to_list(maps:get(<<"name">>,Map)),
     Type=binary_to_list(maps:get(<<"type">>,Map)),
     %
-    case get_status(Type,Map) of
-	{error,Reason}->
-	    NewAcc=Acc,
-	    io:format("Error ~p~n",[Reason]);
+    NewAcc=case get_status(Type,Map) of
+	       {error,Reason}->
+		   io:format("Error ~p~n",[Reason]),
+		   Acc;
 	{ok,{Key,Value}}->
 	    Status={Key,Value},
-	    NewAcc=[[{name,Name},{id,Id},{type,Type},{status,Status}]|Acc]
+	    [[{name,Name},{id,Id},{type,Type},{status,Status}]|Acc]
     end,
     format_info(T,NewAcc).
 
@@ -128,7 +128,7 @@ get_status("ZHAPresence",Map)->
     true=is_map(Z),
     R=maps:get(<<"presence">>,Z),
     {ok,{"presence",R}};
-get_status(Signal,Map) ->
+get_status(Signal,_Map) ->
     {error,[unmatched,Signal,?MODULE,?FUNCTION_NAME,?LINE]}.
 %% --------------------------------------------------------------------
 %% Function:start/0 
